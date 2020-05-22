@@ -1,0 +1,418 @@
+html
+    head
+        title Robot Control
+        link(rel="stylesheet" href="/stylesheets/style.css")
+    style.
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #render_window{
+            float: left;
+            width: 100%;
+            height: 100%;
+            transition: width 1s;
+        }
+        #control_panel{
+            float: right;
+            width: 0%;
+            height: 100%;
+            background-color: #999999;
+            transition: width 1s;
+            position: relative;
+        }
+        #control_panel_expand_btn{
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+        #expand_btn{
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+        .expand_btn_class{
+            transition: fill 0.5s;
+        }
+        #expand_btn:hover .expand_btn_class{
+            fill: #CCCCCC;
+        }
+        #expand_btn:hover .expand_btn_arrow_class{
+            fill: #999999;
+        }
+
+        .joint_position_slider {
+            -webkit-appearance: none;
+            position: absolute;
+            top: 50%;
+            left: 0%;
+            margin: 0;
+            width: 100%;
+            height: 5px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+        .joint_position_slider:hover {
+            opacity: 1;
+        }
+        .joint_position_slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: blue;
+            cursor: pointer;
+        }
+        .joint_position_slider::-moz-range-thumb {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: blue;
+            cursor: pointer;
+        }
+        .joint_position_val {
+            width: 100%;
+            background-color:transparent;
+            border: 0px;
+            text-align: center; 
+        }
+        .joint_control_div {
+            position: absolute;
+            text-align: center;
+            padding: 10px;
+            vertical-align: middle;
+        }
+        .joint_control_sub_div {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+    script(src='/socket.io/socket.io.js')
+    script(src="/javascripts/jquery.min.js")
+    script(src="/javascripts/humanoid_visual.js" type="module")
+    script(type="module").
+        import { divChanging, setJointAngle as setURDFJointAngle } from '/javascripts/humanoid_visual.js';
+        const control_to_id_list = {
+            'left_arm_control':'1',
+            'right_arm_control':'3',
+            'hip_control':'4',
+            'right_thigh_roll_control':'7',
+            'right_thigh_pitch_control':'8',
+            'right_thigh_yaw_control':'6',
+            'left_thigh_roll_control':'12',
+            'left_thigh_pitch_control':'13',
+            'left_thigh_yaw_control':'5',
+            'right_knee_control':'9',
+            'left_knee_control':'14',
+            'right_ankle_roll_control':'11',
+            'right_ankle_pitch_control':'10',
+            'left_ankle_roll_control':'16',
+            'left_ankle_pitch_control':'15'
+        };
+        const id_to_control_list = {
+            '1':'left_arm_control',
+            '3':'right_arm_control',
+            '4':'hip_control',
+            '7':'right_thigh_roll_control',
+            '8':'right_thigh_pitch_control',
+            '6':'right_thigh_yaw_control',
+            '12':'left_thigh_roll_control',
+            '13':'left_thigh_pitch_control',
+            '5':'left_thigh_yaw_control',
+            '9':'right_knee_control',
+            '14':'left_knee_control',
+            '11':'right_ankle_roll_control',
+            '10':'right_ankle_pitch_control',
+            '16':'left_ankle_roll_control',
+            '15':'left_ankle_pitch_control'
+        };
+        var socket = io('/robot_control');
+        socket.on('joint_angle', function(data){
+            for(let d of data){
+                let name = id_to_control_list[d.id];
+                let angle = d.angle.toFixed(2);;
+                $("#"+name+">div>.joint_position_slider").val(angle);
+                $("#"+name+">div>.joint_position_val").val(angle);
+                setURDFJointAngle(control_to_id_list[name], +angle);
+            }
+        });
+        socket.on('joint_torque_enable', function(data){
+            for(let d of data){
+                let name = id_to_control_list[d.id];
+                let enable = (d.enable==='enable');
+                $("#"+name+">div>label").css('opacity', enable?1:0.5);
+            }
+        });
+
+        let setJointAngle = (joint_name, joint_angle) => {
+            socket.emit('set_joint_angle', [{id: control_to_id_list[joint_name], angle: joint_angle}]);
+        }
+        let enableJointTorque = (joint_name, enable) => {
+            socket.emit('enable_joint_torque', [{id: control_to_id_list[joint_name], enable: enable}]);
+        }
+        let getJointAngle = (joint_name) => {
+            socket.emit('get_joint_angle', [{id: control_to_id_list[joint_name]}]);
+        }
+        let getJointsAngle = (joints_name) => {
+            let data = []
+            for(let name of joints_name){
+                data.push({id: control_to_id_list[name]})
+            }
+            socket.emit('get_joint_angle', data);
+        }
+        let responsiveUIUpdate = ()=>{
+            let div_pos = $("#control_panel").position()
+            $("#expand_btn").css({left:-$("#expand_btn").outerWidth(true), top:$("#control_panel").height()/2-$("#expand_btn").outerHeight(true)/2});
+            let h_scale = ($("body").width()/2)/640;
+            let w_scale = $("body").height()/500;
+            let scale = Math.min(h_scale, w_scale);
+            console.log($("body").width(), $("body").height())
+            console.log(scale, h_scale, w_scale);
+            $("#control_panel_container").css({ transform: 'scale('+String(scale)+')' });
+        }    
+        $(document).ready(function() {
+            $("#expand_btn").click(function(){
+                divChanging(true);
+                var expand = !($('#control_panel').width()>0)
+                if(expand){
+                    $('#render_window').css('width','50%');
+                    $('#control_panel').css('width','50%');
+                }else{
+                    $('#render_window').css('width','100%');
+                    $('#control_panel').css('width','0%');
+                }
+                setTimeout(function(){
+                    divChanging(false);
+                    if(expand){
+                        $('.expand_btn_arrow_class').css('transform',"scale(-1,1)");
+                    }else{
+                        $('.expand_btn_arrow_class').css('transform',"scale(1,1)");
+                    }
+                }, 1010);
+            });
+            const control_list = [
+                'left_arm_control','right_arm_control','hip_control','right_thigh_control','left_thigh_control',
+                'right_knee_control','left_knee_control','right_ankle_control','left_ankle_control']
+            const control_list_rpy = {
+                'right_thigh_control':['right_thigh_roll_control','right_thigh_pitch_control','right_thigh_yaw_control'],
+                'left_thigh_control':['left_thigh_roll_control','left_thigh_pitch_control','left_thigh_yaw_control'],
+                'right_ankle_control':['right_ankle_roll_control','right_ankle_pitch_control'],
+                'left_ankle_control':['left_ankle_roll_control','left_ankle_pitch_control']
+            }
+            var control_panel_rect = document.getElementById("control_panel_container").getBoundingClientRect();
+            for(const control_name of control_list){
+                let rect = document.getElementById("svg_"+control_name).getBoundingClientRect();
+                $("#"+control_name).outerWidth(rect.width);
+                $("#"+control_name).outerHeight(rect.height);
+                $("#"+control_name).css({top: rect.y-control_panel_rect.y, left: rect.x-control_panel_rect.x});
+                if(control_name in control_list_rpy){
+                    for(const name of control_list_rpy[control_name]){
+                        $("#"+name+">div>.joint_position_slider").on('input',function(){
+                            setJointAngle(name, +this.value);
+                        })
+                        $("#"+name+">div>label").on('click',function(){
+                            enableJointTorque(name, 'toggle');
+                        })
+                    }
+                }else{
+                    $("#"+control_name+">div>.joint_position_slider").on('input',function(){
+                        setJointAngle(control_name, +this.value);
+                    })
+                    $("#"+control_name+">div>label").on('click',function(){
+                        enableJointTorque(control_name, 'toggle');
+                    })
+                }
+            }
+            
+            responsiveUIUpdate();
+            $( window ).resize(()=>{responsiveUIUpdate();});
+        });
+
+    body
+        div
+            div#render_window
+            div#control_panel
+                svg#expand_btn(width="32" height="95" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg")
+                    // Created with SVG-edit - https://github.com/SVG-Edit/svgedit
+                    g
+                        path.expand_btn_class(d="m16,72.76667q16,0 16,22.83333l0,-45.66667l-16,0l0,22.83333l0,0.00001z" fill="#999999" id="svg_3" stroke="blue" stroke-width="0")
+                        path.expand_btn_class(d="m16,22.83333q16,0 16,-22.83333l0,45.66667l-16,0l0,-22.83333l0,-0.00001z" fill="#999999" id="svg_2" stroke="blue" stroke-width="0")
+                        rect.expand_btn_class(fill="#999999" height="50" id="svg_1" rx="5" ry="5" stroke="#000000" stroke-width="0" width="32" y="22.8")
+                    path.expand_btn_class.expand_btn_arrow_class(d="m15.07335,48.36424l9.94455,-20.81341l-17.88061,20.81341l17.88061,20.8134l-9.94455,-20.8134z" visibility="visible" fill="#cccccc" stroke="blue" stroke-width="0" transform-origin="center")
+                
+                div(style="overflow:hidden;height:100%")
+                    div#control_panel_container(style="transform-origin: top left;transform:scale(1,1);")
+                        svg#humanoid_graph(width='640', height='500', xmlns='http://www.w3.org/2000/svg', xmlns:svg='http://www.w3.org/2000/svg')
+                            // Created with SVG-edit - https://github.com/SVG-Edit/svgedit
+                            g.layer
+                                title Layer 1
+                                rect#svg_left_arm_control(fill='#000000', fill-opacity='0.3', height='70', rx='10', ry='10', stroke='#000000', stroke-width='3', width='150', x='488.50001', y='1.5')
+                                rect#svg_right_arm_control(fill='#000000', fill-opacity='0.3', height='70', rx='10', ry='10', stroke='#000000', stroke-width='3', width='150', x='1.5', y='1.5')
+                                g#svg_2
+                                g#svg_55
+                                g#svg_23(transform='rotate(-10 134.298 97.7309)')
+                                    circle#svg_8(cx='192.57554', cy='97.73093', fill='#000000', r='10', stroke='blue', stroke-width='0')
+                                    rect#svg_9(fill='#000000', height='15', stroke='blue', stroke-width='0', width='120', x='66.02141', y='90.23093')
+                                g#svg_24(transform='rotate(-170 505.702 97.887)')
+                                    circle#svg_25(cx='563.97967', cy='97.88705', fill='#000000', r='10', stroke='blue', stroke-width='0')
+                                    rect#svg_26(fill='#000000', height='15', stroke='blue', stroke-width='0', width='120', x='437.42553', y='90.38705')
+                                g#svg_42(transform='rotate(10 239.175 268.614)')
+                                    g#svg_40
+                                    rect#svg_36(fill='#000000', height='15', stroke='blue', stroke-width='0', transform='rotate(-90 239.223 262.452)', width='100', x='189.2233', y='254.95151')
+                                    circle#svg_35(cx='239.17463', cy='205.87804', fill='#000000', r='10', stroke='blue', stroke-width='0', transform='rotate(-90 239.174 205.878)')
+                                    path#svg_41(d='m209.30025,341.35127l0,0c0,-16.49951 13.3755,-29.87501 29.87501,-29.87501c16.49951,0 29.87501,13.37549 29.87501,29.87501l-14.9375,0c0,-8.24976 -6.68775,-14.9375 -14.9375,-14.9375c-8.24975,0 -14.9375,6.68775 -14.9375,14.9375l-14.9375,0l-0.00002,0z', fill='#000000', stroke='#000000', stroke-width='0')
+                                g#svg_43(transform='rotate(-10 401.25 269.613)')
+                                    g#svg_44
+                                    rect#svg_45(fill='#000000', height='15', stroke='blue', stroke-width='0', transform='rotate(-90 401.299 263.449)', width='100', x='351.29899', y='255.94917')
+                                    circle#svg_46(cx='401.25032', cy='206.8757', fill='#000000', r='10', stroke='blue', stroke-width='0', transform='rotate(-90 401.25 206.876)')
+                                    path#svg_47(d='m371.37594,342.34894l0,0c0,-16.49951 13.3755,-29.87501 29.87501,-29.87501c16.49951,0 29.87501,13.37549 29.87501,29.87501l-14.9375,0c0,-8.24976 -6.68775,-14.9375 -14.9375,-14.9375c-8.24975,0 -14.9375,6.68775 -14.9375,14.9375l-14.9375,0l-0.00002,0z', fill='#000000', stroke='#000000', stroke-width='0')
+                                g#svg_48
+                                    g#svg_49
+                                    rect#svg_50(fill='#000000', height='15', stroke='blue', stroke-width='0', transform='rotate(-90 226.451 398.883)', width='100', x='176.45134', y='391.38339')
+                                    circle#svg_51(cx='226.40266', cy='342.30993', fill='#000000', r='10', stroke='blue', stroke-width='0', transform='rotate(-90 226.402 342.31)')
+                                    path#svg_52(d='m196.52828,477.78316l0,0c0,-16.49951 13.3755,-29.87501 29.87501,-29.87501c16.49951,0 29.87501,13.37549 29.87501,29.87501l-14.9375,0c0,-8.24976 -6.68775,-14.9375 -14.9375,-14.9375c-8.24975,0 -14.9375,6.68775 -14.9375,14.9375l-14.9375,0l-0.00002,0z', fill='#000000', stroke='#000000', stroke-width='0')
+                                g#svg_3
+                                    g#svg_6
+                                    rect#svg_11(fill='#000000', height='15', stroke='blue', stroke-width='0', transform='rotate(-90 414.35 398.474)', width='100', x='364.35017', y='390.97354')
+                                    circle#svg_12(cx='414.30149', cy='341.90008', fill='#000000', r='10', stroke='blue', stroke-width='0', transform='rotate(-90 414.301 341.901)')
+                                    path#svg_13(d='m384.42711,477.37331l0,0c0,-16.49951 13.3755,-29.87501 29.87501,-29.87501c16.49951,0 29.87501,13.37549 29.87501,29.87501l-14.9375,0c0,-8.24976 -6.68775,-14.9375 -14.9375,-14.9375c-8.24975,0 -14.9375,6.68775 -14.9375,14.9375l-14.9375,0l-0.00002,0z', fill='#000000', stroke='#000000', stroke-width='0')
+                                g#svg_37
+                                    rect#svg_29(fill='#000000', height='15', stroke='blue', stroke-width='0', width='100', x='269.94146', y='185.08352')
+                                    rect#svg_19(fill='#000000', height='15', stroke='blue', stroke-width='0', transform='rotate(-90 319.941 179.914)', width='40', x='299.94142', y='172.41383')
+                                    circle#svg_18(cx='319.96584', cy='153.35435', fill='#000000', r='10', stroke='blue', stroke-width='0', transform='rotate(-90 319.966 153.354)')
+                                    path#svg_31(d='m233.01355,214.82293l0,0c0,-16.49951 13.3755,-29.87501 29.87501,-29.87501c16.49951,0 29.87501,13.37549 29.87501,29.87501l-14.9375,0c0,-8.24976 -6.68775,-14.9375 -14.9375,-14.9375c-8.24975,0 -14.9375,6.68775 -14.9375,14.9375l-14.9375,0l-0.00002,0z', fill='#000000', stroke='#000000', stroke-width='0', transform='rotate(60 262.888 199.885)')
+                                    path#svg_38(d='m347.11974,214.82287l0,0c0,-16.49951 13.3755,-29.87501 29.87501,-29.87501c16.49951,0 29.87501,13.37549 29.87501,29.87501l-14.9375,0c0,-8.24976 -6.68775,-14.9375 -14.9375,-14.9375c-8.24975,0 -14.9375,6.68775 -14.9375,14.9375l-14.9375,0l-0.00002,0z', fill='#000000', stroke='#000000', stroke-width='0', transform='rotate(-60 376.995 199.885)')
+                                g#svg_39
+                                    rect#svg_17(fill='#000000', height='30', stroke='blue', stroke-width='0', width='15', x='312.44146', y='94.78617')
+                                    path#svg_4(d='m290.06644,153.7046l0,0c0,-16.49951 13.3755,-29.87501 29.87501,-29.87501c16.49951,0 29.87501,13.37549 29.87501,29.87501l-14.9375,0c0,-8.24976 -6.68775,-14.9375 -14.9375,-14.9375c-8.24975,0 -14.9375,6.68775 -14.9375,14.9375l-14.9375,0l-0.00002,0z', fill='#000000', stroke='#000000', stroke-width='0')
+                                    path#svg_5(d='m176.20717,102.90839l0,0c0,-16.49951 13.3755,-29.87501 29.87501,-29.87501c16.49951,0 29.87501,13.37549 29.87501,29.87501l-14.9375,0c0,-8.24976 -6.68775,-14.9375 -14.9375,-14.9375c-8.24975,0 -14.9375,6.68775 -14.9375,14.9375l-14.9375,0l-0.00002,0z', fill='#000000', stroke='#000000', stroke-width='0', transform='rotate(90 206.082 87.9709)')
+                                    path#svg_14(d='m404.08654,102.90839l0,0c0,-16.49951 13.3755,-29.87501 29.87501,-29.87501c16.49951,0 29.87501,13.37549 29.87501,29.87501l-14.9375,0c0,-8.24976 -6.68775,-14.9375 -14.9375,-14.9375c-8.24975,0 -14.9375,6.68775 -14.9375,14.9375l-14.9375,0l-0.00002,0z', fill='#000000', stroke='#000000', stroke-width='0', transform='rotate(-90 433.961 87.9709)')
+                                    rect#svg_1(fill='#000000', height='15', stroke='blue', stroke-width='0', width='200', x='219.96155', y='80.47089')
+                                g#svg_53
+                                    circle#svg_32(cx='226.39149', cy='476.81684', fill='#000000', r='10', stroke='blue', stroke-width='0', transform='rotate(-90 226.391 476.817)')
+                                    rect#svg_15(fill='#000000', height='15', stroke='blue', stroke-width='0', width='90', x='166.43706', y='483.81819')
+                                g#svg_54
+                                    circle#svg_34(cx='414.28983', cy='476.54296', fill='#000000', r='10', stroke='blue', stroke-width='0', transform='rotate(-90 414.29 476.543)')
+                                    rect#svg_33(fill='#000000', height='15', stroke='blue', stroke-width='0', width='90', x='384.34131', y='483.78058')
+                                rect#svg_hip_control(fill='#000000', fill-opacity='0.3', height='70', rx='10', ry='10', stroke='#000000', stroke-width='3', width='150', x='245', y='1.5')
+                                rect#svg_right_thigh_control(fill='#000000', fill-opacity='0.3', height='150', rx='10', ry='10', stroke='#000000', stroke-width='3', width='150', x='65.60606', y='128.40911')
+                                rect#svg_left_thigh_control(fill='#000000', fill-opacity='0.3', height='150', rx='10', ry='10', stroke='#000000', stroke-width='3', width='150', x='425', y='128.4091')
+                                rect#svg_right_knee_control(fill='#000000', fill-opacity='0.3', height='70', rx='10', ry='10', stroke='#000000', stroke-width='3', width='150', x='33.48485', y='306.18509')
+                                rect#svg_left_knee_control(fill='#000000', fill-opacity='0.3', height='70', rx='10', ry='10', stroke='#000000', stroke-width='3', width='150', x='457.4719', y='306.1851')
+                                rect#svg_right_ankle_control(fill='#000000', fill-opacity='0.3', height='100', rx='10', ry='10', stroke='#000000', stroke-width='3', width='150', x='1.5', y='397.3182')
+                                rect#svg_left_ankle_control(fill='#000000', fill-opacity='0.3', height='100', rx='10', ry='10', stroke='#000000', stroke-width='3', width='150', x='488.50001', y='397.3182')
+                        div#right_arm_control.joint_control_div
+                            div(style="height:33%")
+                                label.joint_label Right Arm Angle
+                            div(style="height:33%;position:relative")
+                                input.joint_position_slider(type="range" min="-180" max="180" step="0.1" value="0")
+                            div(style="height:33%")
+                                input.joint_position_val(type="text" min="-180" max="180" value="0")
+                        div#left_arm_control.joint_control_div
+                            div(style="height:33%")
+                                label Left Arm Angle
+                            div(style="height:33%;position:relative")
+                                input.joint_position_slider(type="range" min="-180" max="180" step="0.1" value="0")
+                            div(style="height:33%")
+                                input.joint_position_val(type="text" min="-180" max="180" value="0")
+                        div#hip_control.joint_control_div
+                            div(style="height:33%")
+                                label Hip Angle
+                            div(style="height:33%;position:relative")
+                                input.joint_position_slider(type="range" min="-180" max="180" step="0.1" value="0")
+                            div(style="height:33%")
+                                input.joint_position_val(type="text" min="-180" max="180" value="0")
+                        div#right_thigh_control.joint_control_div
+                            div#right_thigh_roll_control.joint_control_sub_div(style="height:33%")
+                                div(style="height:33%")
+                                    label Right Thigh Roll
+                                div(style="height:33%;position:relative")
+                                    input.joint_position_slider(type="range" min="-180" max="180" step="0.1" value="0")
+                                div(style="height:33%")
+                                    input.joint_position_val(type="text" min="-180" max="180" value="0")
+                            div#right_thigh_pitch_control.joint_control_sub_div(style="height:33%")
+                                div(style="height:33%")
+                                    label Right Thigh Pitch
+                                div(style="height:33%;position:relative")
+                                    input.joint_position_slider(type="range" min="-180" max="180" step="0.1" value="0")
+                                div(style="height:33%")
+                                    input.joint_position_val(type="text" min="-180" max="180" value="0")
+                            div#right_thigh_yaw_control.joint_control_sub_div(style="height:33%")
+                                div(style="height:33%")
+                                    label Right Thigh Yaw
+                                div(style="height:33%;position:relative")
+                                    input.joint_position_slider(type="range" min="-180" max="180" step="0.1" value="0")
+                                div(style="height:33%")
+                                    input.joint_position_val(type="text" min="-180" max="180" value="0")
+                        div#left_thigh_control.joint_control_div
+                            div#left_thigh_roll_control.joint_control_sub_div(style="height:33%")
+                                div(style="height:33%")
+                                    label Left Thigh Roll
+                                div(style="height:33%;position:relative")
+                                    input.joint_position_slider(type="range" min="-180" max="180" step="0.1" value="0")
+                                div(style="height:33%")
+                                    input.joint_position_val(type="text" min="-180" max="180" value="0")
+                            div#left_thigh_pitch_control.joint_control_sub_div(style="height:33%")
+                                div(style="height:33%")
+                                    label Left Thigh Pitch
+                                div(style="height:33%;position:relative")
+                                    input.joint_position_slider(type="range" min="-180" max="180" step="0.1" value="0")
+                                div(style="height:33%")
+                                    input.joint_position_val(type="text" min="-180" max="180" value="0")
+                            div#left_thigh_yaw_control.joint_control_sub_div(style="height:33%")
+                                div(style="height:33%")
+                                    label Left Thigh Yaw
+                                div(style="height:33%;position:relative")
+                                    input.joint_position_slider(type="range" min="-180" max="180" step="0.1" value="0")
+                                div(style="height:33%")
+                                    input.joint_position_val(type="text" min="-180" max="180" value="0")
+                        div#right_knee_control.joint_control_div
+                            div(style="height:33%")
+                                label Right Knee Angle
+                            div(style="height:33%;position:relative")
+                                input.joint_position_slider(type="range" min="-180" max="180" step="0.1" value="0")
+                            div(style="height:33%")
+                                input.joint_position_val(type="text" min="-180" max="180" value="0")
+                        div#left_knee_control.joint_control_div
+                            div(style="height:33%")
+                                label Left Knee Angle
+                            div(style="height:33%;position:relative")
+                                input.joint_position_slider(type="range" min="-180" max="180" step="0.1" value="0")
+                            div(style="height:33%")
+                                input.joint_position_val(type="text" min="-180" max="180" value="0")
+                        div#right_ankle_control.joint_control_div
+                            div#right_ankle_roll_control.joint_control_sub_div(style="height:50%")
+                                div(style="height:33%")
+                                    label Right Ankle Roll
+                                div(style="height:33%;position:relative")
+                                    input.joint_position_slider(type="range" min="-180" max="180" step="0.1" value="0")
+                                div(style="height:33%")
+                                    input.joint_position_val(type="text" min="-180" max="180" value="0")
+                            div#right_ankle_pitch_control.joint_control_sub_div(style="height:50%")
+                                div(style="height:33%")
+                                    label Right Ankle Pitch
+                                div(style="height:33%;position:relative")
+                                    input.joint_position_slider(type="range" min="-180" max="180" step="0.1" value="0")
+                                div(style="height:33%")
+                                    input.joint_position_val(type="text" min="-180" max="180" value="0")
+                        div#left_ankle_control.joint_control_div
+                            div#left_ankle_roll_control.joint_control_sub_div(style="height:50%")
+                                div(style="height:33%")
+                                    label Left Ankle Roll
+                                div(style="height:33%;position:relative")
+                                    input.joint_position_slider(type="range" min="-180" max="180" step="0.1" value="0")
+                                div(style="height:33%")
+                                    input.joint_position_val(type="text" min="-180" max="180" value="0")
+                            div#left_ankle_pitch_control.joint_control_sub_div(style="height:50%")
+                                div(style="height:33%")
+                                    label Left Ankle Pitch
+                                div(style="height:33%;position:relative")
+                                    input.joint_position_slider(type="range" min="-180" max="180" step="0.1" value="0")
+                                div(style="height:33%")
+                                    input.joint_position_val(type="text" min="-180" max="180" value="0")
+                                

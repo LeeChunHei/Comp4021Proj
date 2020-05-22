@@ -1,0 +1,38 @@
+html
+    head
+        title Robot Control
+        link(rel="stylesheet" href="/stylesheets/style.css")
+
+    script(src='/socket.io/socket.io.js')
+    script(src='/javascripts/jquery.min.js')
+    script.
+        $( document ).ready(function() {
+            var socket = io('/robot_state');
+
+            socket.on('cpu_temperature', function(data){
+                console.log("temp",data);
+                $("#cpu_temperature").text(data.main.toString());
+            });
+
+            socket.on('cpu_current_speed', function(data){
+                console.log("speed",data);
+                $("#cpu_current_speed").text("1234");
+            });
+
+            socket.on('current_load', function(data){
+                console.log("load",data);
+                $("#current_load").text("1234");
+            });
+
+            socket.on('memory_usage', function(data){
+                console.log("usage",data);
+                $("#memory_usage").text((100.0*data.used/data.total).toFixed(2)+"%");
+            });
+        });
+        
+
+    body
+        p(id="cpu_temperature") null
+        p(id="cpu_current_speed") null
+        p(id="current_load") null
+        p(id="memory_usage") null

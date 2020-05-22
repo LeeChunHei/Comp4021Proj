@@ -1,0 +1,917 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="humanoid.SLDASM">
+  <link
+    name="body">
+    <inertial>
+      <origin
+        xyz="0.0737652733382521 -0.194807008696493 0.167128541535065"
+        rpy="0 0 0" />
+      <mass
+        value="0.597500351734941" />
+      <inertia
+        ixx="0.00049743730010923"
+        ixy="1.47172156200525E-07"
+        ixz="6.91398692102765E-08"
+        iyy="0.000803320714973684"
+        iyz="-1.16705852861122E-05"
+        izz="0.00111376014044176" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/body.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/body.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="left_arm">
+    <inertial>
+      <origin
+        xyz="-0.149447849667064 -0.0818380802750398 4.11510737894916E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.166637684636168" />
+      <inertia
+        ixx="9.23975239578003E-05"
+        ixy="-8.00580282830623E-07"
+        ixz="9.4627897308697E-09"
+        iyy="0.000290133815517657"
+        iyz="4.10271077270365E-07"
+        izz="0.000309066312723642" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/left_arm.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/left_arm.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="1"
+    type="revolute">
+    <origin
+      xyz="0.19872 -0.167 0.00078328"
+      rpy="-1.5708 1.5708 0" />
+    <parent
+      link="body" />
+    <child
+      link="left_arm" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      effort="0"
+      velocity="6.8345" />
+  </joint>
+  <link
+    name="right_arm">
+    <inertial>
+      <origin
+        xyz="-0.149447845696694 -0.0818380907507735 -4.11516887073582E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.166637642862257" />
+      <inertia
+        ixx="9.23975017845133E-05"
+        ixy="-8.00581513668108E-07"
+        ixz="-9.4636155171088E-09"
+        iyy="0.000290133811603426"
+        iyz="-4.1026984643295E-07"
+        izz="0.000309066290550355" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/right_arm.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/right_arm.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="3"
+    type="revolute">
+    <origin
+      xyz="-0.051281 -0.167 0.00078328"
+      rpy="1.5708 1.5708 0" />
+    <parent
+      link="body" />
+    <child
+      link="right_arm" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      effort="0"
+      velocity="6.8345" />
+  </joint>
+  <link
+    name="hip">
+    <inertial>
+      <origin
+        xyz="-1.06641485377867E-05 -0.0116089468696484 0.0267363287949819"
+        rpy="0 0 0" />
+      <mass
+        value="0.185196009082854" />
+      <inertia
+        ixx="6.06946134313157E-05"
+        ixy="-2.31016259732638E-08"
+        ixz="-9.4725950449375E-09"
+        iyy="3.76718086222997E-05"
+        iyz="-8.69026378562834E-08"
+        izz="5.66987526125469E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/hip.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/hip.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="4"
+    type="revolute">
+    <origin
+      xyz="0.073719 -0.207 0.088131"
+      rpy="0 0 0" />
+    <parent
+      link="body" />
+    <child
+      link="hip" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      effort="0"
+      velocity="6.8345" />
+  </joint>
+  <link
+    name="left_leg_hip_roll">
+    <inertial>
+      <origin
+        xyz="-2.60242430238089E-05 -0.0166661833037294 -0.0398356950750919"
+        rpy="0 0 0" />
+      <mass
+        value="0.0840177983291228" />
+      <inertia
+        ixx="3.35769612684053E-05"
+        ixy="-1.2294972571583E-08"
+        ixz="5.30271653367638E-08"
+        iyy="2.21167421523244E-05"
+        iyz="1.70263514605991E-06"
+        izz="2.72846955629186E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/left_leg_hip_roll.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/left_leg_hip_roll.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="5"
+    type="revolute">
+    <origin
+      xyz="0.05 0 0"
+      rpy="1.5708 0 0" />
+    <parent
+      link="hip" />
+    <child
+      link="left_leg_hip_roll" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      effort="0"
+      velocity="5.5156" />
+  </joint>
+  <link
+    name="left_leg_hip_pitch">
+    <inertial>
+      <origin
+        xyz="-9.79289883652618E-05 -0.0144244790326145 0.00123796422667855"
+        rpy="0 0 0" />
+      <mass
+        value="0.0949248678116608" />
+      <inertia
+        ixx="3.33539976282163E-05"
+        ixy="-1.08650643421171E-06"
+        ixz="-2.29333886896951E-09"
+        iyy="2.40096439664142E-05"
+        iyz="1.65655075849847E-09"
+        izz="4.27856415701818E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/left_leg_hip_pitch.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/left_leg_hip_pitch.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="12"
+    type="revolute">
+    <origin
+      xyz="0 -0.03415 0"
+      rpy="0 0 0.0044266" />
+    <parent
+      link="left_leg_hip_roll" />
+    <child
+      link="left_leg_hip_pitch" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      effort="0"
+      velocity="6.8345" />
+  </joint>
+  <link
+    name="left_leg_thigh">
+    <inertial>
+      <origin
+        xyz="-0.000542513530171609 -0.0986624967058392 0.00265779280275444"
+        rpy="0 0 0" />
+      <mass
+        value="0.0910223901763719" />
+      <inertia
+        ixx="3.57089329559295E-05"
+        ixy="8.35812009772641E-07"
+        ixz="-8.96586060833173E-09"
+        iyy="1.96679786097757E-05"
+        iyz="1.16044060387348E-06"
+        izz="3.78347454824976E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/left_leg_thigh.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/left_leg_thigh.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="13"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="0.01554 -6.8788E-05 0" />
+    <parent
+      link="left_leg_hip_pitch" />
+    <child
+      link="left_leg_thigh" />
+    <axis
+      xyz="0.99999 -0.0044266 0" />
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      effort="0"
+      velocity="6.8345" />
+  </joint>
+  <link
+    name="left_leg_calf">
+    <inertial>
+      <origin
+        xyz="-0.00023232031076742 -0.0524818729063883 -0.00067131439072543"
+        rpy="0 0 0" />
+      <mass
+        value="0.0117114650670161" />
+      <inertia
+        ixx="1.19050651934913E-05"
+        ixy="-4.58894586277367E-08"
+        ixz="-5.99414417159118E-10"
+        iyy="1.53869845427744E-06"
+        iyz="-1.35409560857834E-07"
+        izz="1.21229903796543E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/left_leg_calf.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/left_leg_calf.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="14"
+    type="revolute">
+    <origin
+      xyz="-0.0005311 -0.11998 0.0023647"
+      rpy="-0.02833 0.00012539 0" />
+    <parent
+      link="left_leg_thigh" />
+    <child
+      link="left_leg_calf" />
+    <axis
+      xyz="0.99999 -0.0044266 0" />
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      effort="0"
+      velocity="6.8345" />
+  </joint>
+  <link
+    name="left_leg_feet_roll">
+    <inertial>
+      <origin
+        xyz="-5.5565853025033E-05 0.0134521775856482 0.000423153765886808"
+        rpy="0 0 0" />
+      <mass
+        value="0.0836315694193623" />
+      <inertia
+        ixx="2.56919220874108E-05"
+        ixy="8.71549028217896E-07"
+        ixz="1.00230338513609E-08"
+        iyy="1.77136720242742E-05"
+        iyz="-1.7794063486198E-07"
+        izz="3.12383479538552E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/left_leg_feet_roll.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/left_leg_feet_roll.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="15"
+    type="revolute">
+    <origin
+      xyz="-0.00053115 -0.11999 -0.0015348"
+      rpy="0.00085868 0 0" />
+    <parent
+      link="left_leg_calf" />
+    <child
+      link="left_leg_feet_roll" />
+    <axis
+      xyz="0.99999 -0.0044266 0" />
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      effort="0"
+      velocity="6.8345" />
+  </joint>
+  <link
+    name="left_leg_feet_pitch">
+    <inertial>
+      <origin
+        xyz="0.00629838842562065 -0.0113034345395077 -0.0248246466146918"
+        rpy="0 0 0" />
+      <mass
+        value="0.0800976526210212" />
+      <inertia
+        ixx="3.49327950334775E-05"
+        ixy="3.85467562496297E-07"
+        ixz="8.99207126655248E-07"
+        iyy="4.88864818488676E-05"
+        iyz="-3.60520067620804E-07"
+        izz="2.10466685179835E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/left_leg_feet_pitch.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/left_leg_feet_pitch.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="16"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="0 -0.00022238 0.018639" />
+    <parent
+      link="left_leg_feet_roll" />
+    <child
+      link="left_leg_feet_pitch" />
+    <axis
+      xyz="5.2817E-05 0.011931 -0.99993" />
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      effort="0"
+      velocity="5.5156" />
+  </joint>
+  <link
+    name="right_leg_hip_roll">
+    <inertial>
+      <origin
+        xyz="-2.60242236100328E-05 -0.0166661826770789 0.0398357114768553"
+        rpy="0 0 0" />
+      <mass
+        value="0.0840178578751945" />
+      <inertia
+        ixx="3.3576988091236E-05"
+        ixy="-1.22950795624739E-08"
+        ixz="-5.30269444128595E-08"
+        iyy="2.21167643705946E-05"
+        iyz="-1.70263880711327E-06"
+        izz="2.72847100070406E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/right_leg_hip_roll.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/right_leg_hip_roll.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="6"
+    type="revolute">
+    <origin
+      xyz="-0.05 0 0"
+      rpy="1.5708 0 3.1416" />
+    <parent
+      link="hip" />
+    <child
+      link="right_leg_hip_roll" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      effort="0"
+      velocity="5.5156" />
+  </joint>
+  <link
+    name="right_leg_hip_pitch">
+    <inertial>
+      <origin
+        xyz="-9.79289750508115E-05 -0.0144244790400807 -0.00123796429879658"
+        rpy="0 0 0" />
+      <mass
+        value="0.0949248674724671" />
+      <inertia
+        ixx="3.33539976035546E-05"
+        ixy="-1.08650657689083E-06"
+        ixz="2.29329230791368E-09"
+        iyy="2.40096437713679E-05"
+        iyz="-1.65632959503792E-09"
+        izz="4.27856414443152E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/right_leg_hip_pitch.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/right_leg_hip_pitch.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="7"
+    type="revolute">
+    <origin
+      xyz="0 -0.03415 0"
+      rpy="0 0 0.0044266" />
+    <parent
+      link="right_leg_hip_roll" />
+    <child
+      link="right_leg_hip_pitch" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      effort="0"
+      velocity="6.8345" />
+  </joint>
+  <link
+    name="right_leg_thigh">
+    <inertial>
+      <origin
+        xyz="-0.000542523929048709 -0.0986624980911395 -0.00265779244081743"
+        rpy="0 0 0" />
+      <mass
+        value="0.0910224496502059" />
+      <inertia
+        ixx="3.57089474305857E-05"
+        ixy="8.35815671269953E-07"
+        ixz="8.9657019789176E-09"
+        iyy="1.96680007532829E-05"
+        iyz="-1.16044068304943E-06"
+        izz="3.78347723098945E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/right_leg_thigh.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/right_leg_thigh.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="8"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="-0.01554 6.8788E-05 0" />
+    <parent
+      link="right_leg_hip_pitch" />
+    <child
+      link="right_leg_thigh" />
+    <axis
+      xyz="0.99999 -0.0044266 0" />
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      effort="0"
+      velocity="6.8345" />
+  </joint>
+  <link
+    name="right_leg_calf">
+    <inertial>
+      <origin
+        xyz="-0.000232320310768842 -0.0524818729063878 0.000671314390724043"
+        rpy="0 0 0" />
+      <mass
+        value="0.0117114650670161" />
+      <inertia
+        ixx="1.19050651934913E-05"
+        ixy="-4.58894586277339E-08"
+        ixz="5.99414417158999E-10"
+        iyy="1.53869845427744E-06"
+        iyz="1.35409560857836E-07"
+        izz="1.21229903796543E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/right_leg_calf.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/right_leg_calf.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="9"
+    type="revolute">
+    <origin
+      xyz="-0.0005311 -0.11998 -0.0023647"
+      rpy="0.02833 -0.00012539 0" />
+    <parent
+      link="right_leg_thigh" />
+    <child
+      link="right_leg_calf" />
+    <axis
+      xyz="0.99999 -0.0044266 0" />
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      effort="0"
+      velocity="6.8345" />
+  </joint>
+  <link
+    name="right_leg_feet_roll">
+    <inertial>
+      <origin
+        xyz="-5.55771119490275E-05 0.013452181846672 -0.000423153660081554"
+        rpy="0 0 0" />
+      <mass
+        value="0.0836316288209588" />
+      <inertia
+        ixx="2.56919365670597E-05"
+        ixy="8.71552584279252E-07"
+        ixz="-1.00232967638516E-08"
+        iyy="1.77136941231147E-05"
+        iyz="1.7794064796338E-07"
+        izz="3.12383747812635E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/right_leg_feet_roll.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/right_leg_feet_roll.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="10"
+    type="revolute">
+    <origin
+      xyz="-0.00053115 -0.11999 0.0015348"
+      rpy="-0.00085868 0 0" />
+    <parent
+      link="right_leg_calf" />
+    <child
+      link="right_leg_feet_roll" />
+    <axis
+      xyz="0.99999 -0.0044266 0" />
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      effort="0"
+      velocity="6.8345" />
+  </joint>
+  <link
+    name="right_leg_feet_pitch">
+    <inertial>
+      <origin
+        xyz="0.00629838527125589 -0.0113034375644525 0.0248246407503925"
+        rpy="0 0 0" />
+      <mass
+        value="0.0800976336467204" />
+      <inertia
+        ixx="3.49327930939881E-05"
+        ixy="3.85467070527994E-07"
+        ixz="-8.99205550489576E-07"
+        iyy="4.88864722436474E-05"
+        iyz="3.6052040520837E-07"
+        izz="2.10466560026245E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/right_leg_feet_pitch.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="/media/leechunhei/Data/school/FYP/robo_one_auto_design/gazebo/urdf/humanoid.SLDASM/meshes/right_leg_feet_pitch.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="11"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0.00022238 0.018639" />
+    <parent
+      link="right_leg_feet_roll" />
+    <child
+      link="right_leg_feet_pitch" />
+    <axis
+      xyz="5.2817E-05 0.011931 0.99993" />
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      effort="0"
+      velocity="5.5156" />
+  </joint>
+</robot>

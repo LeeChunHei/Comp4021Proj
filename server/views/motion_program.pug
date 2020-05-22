@@ -1,0 +1,588 @@
+html
+    head
+        title Robot Control
+        link(rel="stylesheet" href="/stylesheets/style.css")
+        link(rel="stylesheet" href="/stylesheets/jquery-ui.min.css")
+    style.
+        body {
+            font-family: Arial;
+            padding: 0 0 0 0;
+            margin: 0;
+            overflow: hidden;
+        }
+        /* Style the tab */
+        .tab {
+            overflow: hidden;
+            //- border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            //- background-color: #999999;
+        }
+        /* Style the buttons inside the tab */
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
+        }
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+            background-color: #ddd;
+        }
+        /* Create an active/current tablink class */
+        .tab button.active {
+            //- background-color: #ccc;
+            background-color: #999999;
+        }
+        /* Style the tab content */
+        .tabcontent {
+            display: none;
+            height: 20%;
+            padding: 6px 12px;
+            -webkit-animation: fadeEffect 1s;
+            animation: fadeEffect 1s;
+            background-color: #999999;
+        }
+        /* Fade in tabs */
+        @-webkit-keyframes fadeEffect {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+        @keyframes fadeEffect {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        #frame_capture {
+            height: 100%;
+            //- padding: 3% 3% 3% 3%;
+        }
+        #frame_capture > input {
+            width: 96%;
+            height: 18%;
+            padding: 12px 20px;
+            margin: 1% 2%;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        #frame_capture > lable {
+            width: 96%;
+            height: 20%;
+            margin: 0 2%;
+        }
+
+        #frame_capture > button {
+            width: 96%;
+            height: 18%;
+            background-color: #0066cc;
+            color: white;
+            margin: 0% 2%;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #frame_capture > button:hover {
+            background-color: #0033cc;
+        }
+
+        #frame_list button {
+            background-color: #4CAF50; /* Green */
+            border: 1px solid green;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            display: block;
+        }
+
+        #frame_list > #list > button:not(:last-child) {
+            border-bottom: none; /* Prevent double borders */
+        }
+
+        #frame_list > #list > button:hover {
+            background-color: #3e8e41;
+        }
+
+        #motion.tabcontent {
+            overflow: hidden;
+            padding: 0 0 0 0;
+            margin: 0 0 0 0;
+            height: 10%;
+        }
+        #sequence_timeline {
+            list-style-type: none;
+            display: block;
+            background: grey;
+            padding: 0;
+            height: 100%;
+            width: 101%;
+            padding: 0 0 0 0;
+            margin: 0 0 0 0;
+            background-size: 1.3vw 1.3vw;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, .5) 1px, transparent 1px);
+        }
+        #sequence_timeline>li {
+            float: left;
+            //- background: rgba(221, 245, 66, .3);
+            background-image: linear-gradient(to right, rgba(0, 0, 230, .5) , rgba(0, 0, 230, .3));
+            width: 1vw;
+            //- margin: 5px;
+            //- padding: 5px;
+            border-left: 0.3vw solid rgb(0, 0, 153);
+            height: 100%;
+        }
+        #expand_frame_list_pool{
+            //- width: 96%;
+            height: 100%;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+            float:left;
+        }
+        #expand_frame_list_pool:hover {
+            background-color: #0033cc;
+        }
+        #frame_list_pool_container{
+            width:0%;
+            height:100%;
+            overflow: auto;
+            transition: width 1s;
+            float: left;
+            max-width: 80%;
+        }
+        #sequence_frame_list_pool {
+            //- position: relative;
+            list-style-type: none;
+            display: block;
+            background: blue;
+            padding: 0;
+            height: 100%;
+            padding: 0 0 0 0;
+            margin: 0 0 0 0;
+            overflow-y: hidden;
+        }
+        #sequence_frame_list_pool>li {
+            float: left;
+            width: 98px;
+            overflow: auto;
+            //- margin: 5px;
+            //- padding: 5px;
+            background: #4CAF50; /* Green */
+            border: 1px solid green;
+            height: 100%;
+            text-align: center;
+        }
+        #expand_sequence_list{
+            //- width: 96%;
+            height: 100%;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+            float:left;
+        }
+        #expand_sequence_list:hover {
+            background-color: #0033cc;
+        }
+        #sequence_list_container{
+            width:0%;
+            height:100%;
+            overflow: auto;
+            transition: width 1s;
+            float: left;
+            max-width: 70%;
+        }
+        #sequence_list>button {
+            float: left;
+            height: 100%;
+            background-color: #4CAF50; /* Green */
+            border: 1px solid green;
+            //- color: white;
+            //- padding: 15px 32px;
+            text-align: center;
+            //- text-decoration: none;
+            //- font-size: 16px;
+            cursor: pointer;
+            //- width: 100%;
+            //- display: block;
+        }
+        #save_sequence{
+            //- width: 96%;
+            height: 100%;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+            float:left;
+        }
+        #save_sequence:hover {
+            background-color: #0033cc;
+        }
+        #run_sequence{
+            //- width: 96%;
+            height: 100%;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+            float:left;
+        }
+        #run_sequence:hover {
+            background-color: #0033cc;
+        }
+        #clear_sequence{
+            //- width: 96%;
+            height: 100%;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+            float:left;
+        }
+        #clear_sequence:hover {
+            background-color: #0033cc;
+        }
+
+    script(src='/socket.io/socket.io.js')
+    script(src="/javascripts/jquery.min.js")
+    script(src="/javascripts/jquery-ui.min.js")
+    script.
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+                tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        function expandFrameListPool(){
+            $("#sequence_list_container").width(0);
+            if($("#frame_list_pool_container").width()>0){
+                $("#frame_list_pool_container").width(0);
+            }else{
+                $("#frame_list_pool_container").width($("#sequence_frame_list_pool").width())
+            }
+        }
+        function expandSequenceList(){
+            $("#frame_list_pool_container").width(0);
+            if($("#sequence_list_container").width()>0){
+                $("#sequence_list_container").width(0);
+            }else{
+                $("#sequence_list_container").width($("#sequence_list").width())
+            }
+        }
+
+    script(type="module").
+        var socket = io('/motion_program');
+
+        var sequence_list = [];
+
+        let viewSequence = (sequence_name)=>{
+            $('#sequence_timeline').empty();
+            for(let sequence of sequence_list){
+                if(sequence['name']===sequence_name){
+                    // do sth
+                    for(let frame of sequence['frame']){
+                        let frame_element = $("<li rel='tooltip' title='"+frame+"'></li>");
+                        frame_element.appendTo('#sequence_timeline');
+                        let reach_time = 0;
+                        for(let f of frame_list){
+                            if(f['name']===frame){
+                                reach_time = f['reach_time'];
+                                break;
+                            }
+                        }
+                        frame_element.css('color','red');
+                        if(reach_time>0){
+                            frame_element.width(frame_element.width()*(1+reach_time*10));
+                        }
+                        frame_element.contextmenu(function(e) {
+                            if(confirm("Delete this frame?")){
+                                $(e.target).remove();
+                            }
+                            e.preventDefault();
+                        });
+                    }
+                    let total_width = 0;
+                    for(let child of $('#sequence_timeline').children()){
+                        total_width += $(child).outerWidth(true);
+                    }
+                    if(total_width>$('#sequence_timeline').width()){
+                        $('#sequence_timeline').width(total_width+10);
+                    }
+                    return;
+                }
+            }
+        }
+
+        let runSequence = ()=>{
+            let frame = [];
+            for(let child of $('#sequence_timeline').children()){
+                frame.push($(child).attr('title'));
+            }
+            socket.emit('save_sequence', {name: '__________temp__________', frame: frame});
+            socket.emit('run_sequence', {'name': '__________temp__________'});
+        }
+
+        socket.on('sequence_list', function(data){
+            sequence_list = data;
+            $('#sequence_list_container>#sequence_list').empty();
+            for(let sequence of sequence_list){
+                $('#sequence_list_container>#sequence_list').append("<button>"+sequence['name']+"</button>");
+            }
+            let total_width = 0;
+            for(let child of $('#sequence_list_container>#sequence_list').children()){
+                $(child).click(()=>{viewSequence($(child).text())});
+                let tmpbtn = $(child).clone().appendTo( "body" ).css({'display':'block','visibility': 'hidden', 'border': '1px solid green', 'text-align': 'center'});
+                total_width += tmpbtn.outerWidth(true);
+                console.log(tmpbtn.outerWidth(true))
+                tmpbtn.remove();
+            }
+            console.log(total_width)
+            $('#sequence_list_container>#sequence_list').width(total_width+0.1);
+        });
+
+        var frame_list = [];//[{'name':'test'},{'name':'test1'}];
+
+        let runFrame = (frame_name)=>{
+            for(let frame of frame_list){
+                if(frame['name']===frame_name){
+                    $("#frame_capture > .name").val(frame_name);
+                    $("#frame_capture > .reach_time").val(frame['reach_time']);
+                    socket.emit('run_frame', frame_name);
+                    return;
+                }
+            }
+            socket.emit('get_frame_list', {});
+        }
+
+        socket.on('frame_list', function(data){
+            frame_list = data;
+            $('#frame_list>#list').empty();
+            $('#sequence_frame_list_pool').empty();
+            for(let frame of frame_list){
+                $('#frame_list>#list').append("<button>"+frame['name']+"</button>");
+                $('#sequence_frame_list_pool').append("<li reach_time='"+frame['reach_time']+"'>"+frame['name']+"</li>");
+            }
+            for(let child of $('#frame_list>#list').children()){
+                $(child).click(()=>{runFrame($(child).text())});
+            }
+            $('#sequence_frame_list_pool').width(100*$('#sequence_frame_list_pool>li').length);
+        });
+
+        let captureFrame = ()=>{
+            let name_val = $("#frame_capture > .name").val();
+            if(name_val===''){
+                alert('Frame Name cannot be empty');
+                return;
+            }
+            for(let frame of frame_list){
+                if(name_val===frame['name']){
+                    let new_name = prompt("Frame with same name exist\nAre you sure you want to save with this name?", name_val);
+                    if(new_name===null){
+                        return;
+                    }else if(new_name!==name_val){
+                        captureFrameLoop(new_name, +($("#frame_capture > .reach_time").val()));
+                        return;
+                    }
+                    break;
+                }
+            }
+            socket.emit('capture_frame', {name: name_val, reach_time:+($("#frame_capture > .reach_time").val())});
+            alert(name_val + ' saved');
+        }
+
+        let captureFrameLoop = (frame_name, reach_time)=>{
+            if(frame_name===''){
+                alert('Frame Name cannot be empty');
+                return;
+            }
+            for(let frame of frame_list){
+                if(frame_name===frame['name']){
+                    let new_name = prompt("Frame with same name exist\nAre you sure you want to save with this name?", frame_name);
+                    if(new_name===null){
+                        return;
+                    }else if(new_name!==frame_name){
+                        captureFrameLoop(new_name, reach_time);
+                        return;
+                    }
+                    break;
+                }
+            }
+            socket.emit('capture_frame', {name: frame_name, reach_time:reach_time});
+            alert(name_val + ' saved');
+        }
+
+        let saveSequence = ()=>{
+            let name_val = prompt("What is the name for this sequence?");
+            if(name_val===''){
+                alert('Frame Name cannot be empty');
+                return;
+            }
+            if(name_val===null){
+                return;
+            }
+            let frame = [];
+            for(let child of $('#sequence_timeline').children()){
+                frame.push($(child).attr('title'));
+            }
+            console.log(frame);
+            for(let sequence of sequence_list){
+                if(name_val===sequence['name']){
+                    let new_name = prompt("Sequence with same name exist\nAre you sure you want to save with this name?", name_val);
+                    if(new_name===null){
+                        return;
+                    }else if(new_name!==name_val){
+                        saveSequenceLoop(new_name, frame);
+                        return;
+                    }
+                    break;
+                }
+            }
+            $("#sequence_list_container").width(0);
+            socket.emit('save_sequence', {name: name_val, frame: frame});
+            alert(name_val + ' saved');
+        }
+
+        let saveSequenceLoop = (sequence_name, frame)=>{
+            if(sequence_name===''){
+                alert('Sequence Name cannot be empty');
+                return;
+            }
+            for(let sequence of sequence_list){
+                if(sequence_name===sequence['name']){
+                    let new_name = prompt("Sequence with same name exist\nAre you sure you want to save with this name?", sequence_name);
+                    if(new_name===null){
+                        return;
+                    }else if(new_name!==sequence_name){
+                        captureFrameLoop(new_name, frame);
+                        return;
+                    }
+                    break;
+                }
+            }
+            $("#sequence_list_container").width(0);
+            socket.emit('save_sequence', {name: sequence_name, frame: frame});
+            alert(name_val + ' saved');
+        }
+
+        $(document).ready(function() {
+            $( document ).tooltip();
+            $('.tab').children()[0].click();
+            $( "#sequence_timeline" ).sortable({
+                axis: "x",
+                containment: "parent",
+                start: function(){$(document).tooltip("destroy")},
+                stop: function(){$(document).tooltip()},
+                receive: function( event, ui ) {
+                    let frame_name = ui.item.text();
+                    ui.item.attr("rel","tooltip").attr("title",frame_name).text('');
+                    let reach_time = ui.item.attr("reach_time");
+                    if(reach_time>0){
+                        ui.item.width(ui.item.width()*(1+reach_time*10));
+                    }
+                    let total_width = 0;
+                    for(let child of $('#sequence_timeline').children()){
+                        total_width += $(child).outerWidth(true);
+                    }
+                    if(total_width>$('#sequence_timeline').width()){
+                        $('#sequence_timeline').width($('#sequence_timeline').width()+ui.item.outerWidth(true));
+                    }
+                    ui.item.contextmenu(function(e) {
+                        if(confirm("Delete this frame?")){
+                            $(e.target).remove();
+                        }
+                        e.preventDefault();
+                    });
+                }
+            }).disableSelection();
+            $( "#sequence_frame_list_pool" ).sortable({
+                connectWith: "#sequence_timeline",
+                helper: "clone",
+                remove: function(event, ui) {
+                    let obj = ui.item.clone();
+                    $('#sequence_frame_list_pool').append(obj);
+                    //- obj.attr("rel","tooltip").attr("title",obj.text()).text('');
+                    //- $('#sequence_timeline').append(obj);
+                    //- console.log(obj.outerWidth(true))
+                    //- $('#sequence_timeline').width($('#sequence_timeline').width()+obj.outerWidth(true));
+                    //- $(this).sortable('cancel');
+                }
+            }).disableSelection();
+            $('#clear_sequence').click(()=> {
+                if(confirm("Empty the whole sequence?")){
+                    $('#sequence_timeline').empty();
+                }
+            });
+            $('#frame_capture > button').click(captureFrame);
+            $('#save_sequence').click(saveSequence);
+            $('#run_sequence').click(runSequence);
+            socket.emit('get_frame_list', {});
+            socket.emit('get_sequence_list', {});
+        }); 
+
+    body
+        .tab
+            //- button.tablinks(onclick="openTab(event, 'sequence')") Sequence
+            button.tablinks(onclick="openTab(event, 'motion')") Sequence
+            button.tablinks(onclick="openTab(event, 'frame')") Frame
+        //- #sequence.tabcontent
+        //-     p
+        //-         | Try sorting the items on list-1. Note how easy it is.
+        //-         br
+        //-         | Now move all the list items from list-1 onto the list-2, try to reorder them, and compare.
+        //-     ul#list-1
+        //-         li Item 1
+        //-         li Item 2
+        //-         li Item 3
+        //-         li Item 4
+        //-         li Item 5
+        //-         li Item 6
+        //-     ul#list-2
+        #motion.tabcontent
+            div(style="width:100%;height:50%;overflow:auto")
+                ul#sequence_timeline
+            div(style="height:50%;")
+                button#expand_sequence_list(onclick="expandSequenceList()") Sequence List
+                #sequence_list_container
+                    #sequence_list
+
+                button#expand_frame_list_pool(onclick="expandFrameListPool()") Frame List
+                #frame_list_pool_container
+                    ul#sequence_frame_list_pool
+                
+
+                button#clear_sequence Clear Sequence
+                button#save_sequence Save Sequence
+                button#run_sequence Run Sequence
+
+        #frame.tabcontent
+            div(style="width:70%;height:100%;float:left")
+                form#frame_capture
+                    lable(for="name") Frame Name: 
+                    input.name(placeholder="frame name")
+                    br
+                    lable(for="reach_time") Reach Time:  
+                    input.reach_time(type="number" placeholder="frame reach time in second")
+                    button(type="button") Capture
+            div(style="width:30%;height:100%;float:right")
+                div(style="height:20%;text-align:center;font-size:20px") Frame List
+                #frame_list(style="height:80%;")
+                    #list(style="height:100%;overflow:auto")
+        
+        iframe(src="/robot_control" style="height:73%;width:100%;")
